@@ -57,15 +57,18 @@ function saveSettings(setting, value) {
     const settings = {
         [setting]: value
     };
-    
+
     // Save settings
     chrome.storage.sync.set(settings);
 
     // Notify content script
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        // Sekme ve URL kontrolü
-        if (tabs && tabs[0] && tabs[0].url && 
-            tabs[0].url.match(/\bamazon\.(com|co\.uk|de|fr|it|es|nl|pl|se|com\.tr)\b/)) {
+        if (chrome.runtime.lastError) {
+            console.error('Chrome API Error:', chrome.runtime.lastError);
+            return;
+        }
+
+        if (tabs?.[0]?.url?.match(/\bamazon\.(com|co\.uk|de|fr|it|es|nl|pl|se|com\.tr)\b/)) {
             chrome.tabs.sendMessage(tabs[0].id, {
                 type: setting === 'enabled' ? 'EXTENSION_STATE' : 'SETTING_CHANGED',
                 setting: setting,
@@ -73,4 +76,4 @@ function saveSettings(setting, value) {
             });
         }
     });
-} 
+}

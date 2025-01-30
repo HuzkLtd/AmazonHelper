@@ -82,8 +82,15 @@ function applyFilters() {
     });
 }
 
-// Run filter periodically
-setInterval(applyFilters, 1000);
+// Use MutationObserver for better performance
+const filterObserver = new MutationObserver(debounce(() => {
+    if (state.enabled) applyFilters();
+}, 250));
+
+filterObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+});
 
 // Debounce utility
 function debounce(func, wait) {
