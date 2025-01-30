@@ -4,7 +4,8 @@
   "version": "1.0",
   "description": "Transform your Amazon shopping with customisable dark mode and sponsored content removal. This elegant extension remembers your preferences whilst delivering a cleaner, more comfortable shopping experience.",
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
   ],
   "host_permissions": [
     "*://*.amazon.com/*",
@@ -47,8 +48,11 @@
         "*://*.amazon.se/*",
         "*://*.amazon.com.tr/*"
       ],
-      "js": ["content.js"],
+      "js": ["content.js", "productPage.js"],
       "css": ["styles.css"]
     }
-  ]
-} 
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

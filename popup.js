@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         primeOnly: false,
         getTomorrow: false,
         getToday: false,
-        darkMode: true
+        darkMode: true,
+        ratingSortEnabled: false
     }, (items) => {
         // Set checkbox states
         document.getElementById('extensionEnabled').checked = items.enabled;
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('getTomorrow').checked = items.getTomorrow;
         document.getElementById('getToday').checked = items.getToday;
         document.getElementById('darkMode').checked = items.darkMode;
+        document.getElementById('ratingSortEnabled').checked = items.ratingSortEnabled;
 
         // Apply dark mode if enabled
         if (items.darkMode) {
@@ -29,7 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'primeOnly',
         'getTomorrow',
         'getToday',
-        'darkMode'
+        'darkMode',
+        'ratingSortEnabled'
     ];
 
     switches.forEach(id => {
@@ -50,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    document.getElementById('ratingSortEnabled').addEventListener('change', function() {
+        saveSettings('ratingSortEnabled', this.checked);
+    });
 });
 
 // Save settings and notify content script
@@ -57,23 +64,20 @@ function saveSettings(setting, value) {
     const settings = {
         [setting]: value
     };
-
-    // Save settings
-    chrome.storage.sync.set(settings);
-
-    // Notify content script
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        if (chrome.runtime.lastError) {
-            console.error('Chrome API Error:', chrome.runtime.lastError);
-            return;
-        }
-
-        if (tabs?.[0]?.url?.match(/\bamazon\.(com|co\.uk|de|fr|it|es|nl|pl|se|com\.tr)\b/)) {
-            chrome.tabs.sendMessage(tabs[0].id, {
-                type: setting === 'enabled' ? 'EXTENSION_STATE' : 'SETTING_CHANGED',
-                setting: setting,
-                enabled: value
-            });
-        }
+    
+    chrome.storage.sync.set(settings, () => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if (!tabs[0]?.id) return;
+            
+            try {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    type: setting === 'enabled' ? 'EXTENSION_STATE' : 'SETTING_CHANGED',
+                    setting: setting,
+                    enabled: value
+                });
+            } catch (error) {
+                console.error('Message sending failed:', error);
+            }
+        });
     });
 }

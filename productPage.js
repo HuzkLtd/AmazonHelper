@@ -186,5 +186,39 @@ function handleProductPage() {
     setInterval(removeSponsored, 500);
 }
 
+function addCategoryToRating() {
+    const ratingElement = document.querySelector('.a-icon-alt');
+    const categoryElement = document.querySelector('#wayfinding-breadcrumbs_feature_div ul.a-unordered-list');
+    if (ratingElement && categoryElement) {
+        const categoryText = categoryElement.innerText.trim().replace(/\n/g, ' > ');
+        const categorySpan = document.createElement('span');
+        categorySpan.style.fontSize = '12px';
+        categorySpan.style.color = '#555';
+        categorySpan.textContent = ` (${categoryText})`;
+        ratingElement.parentNode.appendChild(categorySpan);
+    }
+}
+
 // Sayfa yüklendiğinde çalıştır
-document.addEventListener('DOMContentLoaded', handleProductPage); 
+document.addEventListener('DOMContentLoaded', () => {
+    handleProductPage();
+    addCategoryToRating();
+});
+
+// Mesaj dinleyicisi ekle
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === 'SETTING_CHANGED' && message.setting === 'sponsoredEnabled') {
+        if (message.enabled) {
+            removeSponsored();
+        } else {
+            // Optionally undo sponsored removal if desired
+        }
+    } else if (message.type === 'EXTENSION_STATE') {
+        if (!message.enabled) {
+            // Disable or pause extension actions if needed
+        } else {
+            // Re-enable extension actions
+            removeSponsored();
+        }
+    }
+});

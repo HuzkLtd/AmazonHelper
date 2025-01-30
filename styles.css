@@ -3,6 +3,7 @@
 div.AdHolder,
 [aria-label="View Sponsored information or leave ad feedback"] {
     display: none !important;
+    pointer-events: none !important; /* Tıklamayı tamamen engelle */
 }
 
 /* Dark mode support */
@@ -61,4 +62,4 @@ div.AdHolder,
     #amazon-sorter-warning button:hover {
         color: #e0e0e0 !important;
     }
-} 
+}
