@@ -1,13 +1,11 @@
 const translations = {
     'com': {
         extensionActive: 'Extension Active',
-        sponsoredContent: 'Hide Sponsored',
-        ratingSort: 'Sort by Rating'
+        sponsoredContent: 'Hide Sponsored'
     },
     'co.uk': {
         extensionActive: 'Extension Active',
-        sponsoredContent: 'Hide Sponsored',
-        ratingSort: 'Sort by Rating'
+        sponsoredContent: 'Hide Sponsored'
     },
     'de': {
         extensionActive: 'Erweiterung Aktiv',

@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.sync.get({
         enabled: true,
         sponsoredEnabled: true,
-        ratingSortEnabled: false,
         primeOnly: false,
         getTomorrow: false,
         getToday: false,

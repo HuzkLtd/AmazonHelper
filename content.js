@@ -139,44 +139,7 @@ function removeSponsoredProducts() {
     });
 }
 
-// Sort products by rating
-function sortByRating() {
-    if (!state.enabled || !state.settings.ratingSortEnabled) return;
-    
-    const productGrid = document.querySelector('.s-main-slot');
-    if (!productGrid) return;
 
-    const products = Array.from(productGrid.children).filter(product => 
-        product.classList.contains('s-result-item')
-    );
-    if (!products.length) return;
-
-    const ratings = new Map();
-    products.forEach(product => {
-        const ratingElement = product.querySelector('.a-icon-star-small, .a-star-small-4-5, .a-star-small-4, .a-star-small-5');
-        let rating = 0;
-        let reviewCount = 0;
-
-        if (ratingElement) {
-            const ratingText = ratingElement.getAttribute('aria-label') || '';
-            const match = ratingText.match(/(\d+(\.\d+)?)/);
-            if (match) rating = parseFloat(match[1]);
-
-            // Get review count
-            const reviewElement = product.querySelector('.a-size-base.s-underline-text');
-            if (reviewElement) {
-                const reviewText = reviewElement.textContent.replace(/[^0-9]/g, '');
-                reviewCount = parseInt(reviewText) || 0;
-            }
-        }
-        // Use both rating and review count for sorting
-        const sortValue = rating * (1 + Math.log(reviewCount + 1) / 10);
-        ratings.set(product, sortValue);
-    });
-
-    products.sort((a, b) => ratings.get(b) - ratings.get(a));
-    products.forEach(product => productGrid.appendChild(product));
-}
 
 // Reset all changes
 function resetChanges() {
