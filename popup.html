@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            width: 250px;
+            padding: 4px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 14px;
+            text-align: center;
+            background: linear-gradient(45deg, #232f3e, #febd69, #232f3e);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        body.dark-mode .header h1 {
+            background: linear-gradient(45deg, #febd69, #fff, #febd69);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        /* Header container için yeni stil */
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2px 0;
+            padding: 4px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .switch-container:hover {
+            background-color: #f5f5f5;
+        }
+
+        .switch-label {
+            font-size: 12px;
+            line-height: 1.2;
+            color: #333;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 32px;
+            height: 16px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 12px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #febd69;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+
+        .section-title {
+            font-size: 13px;
+            color: #666;
+            margin: 4px 0 2px;
+            padding-top: 4px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer {
+            margin-top: 4px;
+            padding-top: 4px;
+            padding-bottom: 2px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .switch-container {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .switch-container:hover {
+            background-color: #2d2d2d;
+        }
+
+        body.dark-mode .section-title {
+            color: #febd69;
+            border-top-color: #333;
+        }
+
+        body.dark-mode .header {
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .footer {
+            color: #999;
+            border-top-color: #333;
+        }
+
+        body.dark-mode .switch-label {
+            color: #e0e0e0;
+        }
+
+        /* Compact section spacing */
+        .section-title + .switch-container {
+            margin-top: 2px;
+        }
+
+        .footer-link {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-link:hover {
+            color: #febd69;
+        }
+
+        body.dark-mode .footer-link {
+            color: #999;
+        }
+
+        body.dark-mode .footer-link:hover {
+            color: #febd69;
+        }
+
+        /* Footer logo styles */
+        .footer-logo {
+            width: 50px;
+            height: 15px;
+            vertical-align: middle;
+            margin-left: 2px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover .footer-logo {
+            opacity: 1;
+        }
+
+        /* Dark mode için logo ayarı */
+        body.dark-mode .footer-logo {
+            filter: brightness(0.8);
+        }
+
+        body.dark-mode .footer-link:hover .footer-logo {
+            filter: brightness(1);
+        }
+
+        .dark-logo {
+            display: none;
+        }
+        
+        .light-logo {
+            display: block;
+        }
+        
+        body.dark-mode .dark-logo {
+            display: block;
+        }
+        
+        body.dark-mode .light-logo {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <img src="icon128.png" alt="Logo">
+            <h1>AmazonHelper</h1>
+        </div>
+    </div>
+
+    <div class="switch-container">
+        <span class="switch-label">Extension Active</span>
+        <label class="switch">
+            <input type="checkbox" id="extensionEnabled" checked>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="section-title">Content & Sorting</div>
+
+    <div class="switch-container">
+        <span class="switch-label">Hide Sponsored Content</span>
+        <label class="switch">
+            <input type="checkbox" id="sponsoredEnabled" checked>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="switch-container">
+        <span class="switch-label">Sort by Rating</span>
+        <label class="switch">
+            <input type="checkbox" id="ratingSortEnabled" checked>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="section-title">Filter Options</div>
+
+    <div class="switch-container">
+        <span class="switch-label">Prime Only</span>
+        <label class="switch">
+            <input type="checkbox" id="primeOnly">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="switch-container">
+        <span class="switch-label">Get It Today</span>
+        <label class="switch">
+            <input type="checkbox" id="getToday">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="switch-container">
+        <span class="switch-label">Get It Tomorrow</span>
+        <label class="switch">
+            <input type="checkbox" id="getTomorrow">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="section-title">Appearance</div>
+
+    <div class="switch-container">
+        <span class="switch-label">Dark Mode</span>
+        <label class="switch">
+            <input type="checkbox" id="darkMode">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="footer">
+        <a href="https://huzk.com" target="_blank" class="footer-link">
+            <img src="huzk-logo.png" alt="Huzk" class="footer-logo dark-logo">
+            <img src="huzk-logo-light.png" alt="Huzk" class="footer-logo light-logo">
+        </a>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 
