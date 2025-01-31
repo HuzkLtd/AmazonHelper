@@ -94,9 +94,9 @@ function applyAllFilters() {
         product.style.display = shouldHide ? 'none' : '';
     });
 
-    // Sponsored ürünleri geri yükle
+    // Force sponsored items to reappear if the setting is disabled
     if (!state.settings.sponsoredEnabled) {
-        state.originalOrder.forEach(product => {
+        products.forEach(product => {
             const isSponsored = product.querySelector(
                 '[data-component-type="sp-sponsored-result"], ' +
                 'div.AdHolder, ' +
@@ -112,7 +112,14 @@ function applyAllFilters() {
     if (state.settings.ratingSortEnabled) {
         sortByRating();
     } else {
-        restoreOriginalOrder();
+        // Reorder only the still-visible items to the original order
+        const container = document.querySelector('.s-main-slot');
+        if (!container) return;
+        const fragment = document.createDocumentFragment();
+        state.originalOrder.forEach(item => {
+            if (item.style.display !== 'none') fragment.appendChild(item);
+        });
+        container.appendChild(fragment);
     }
 }
 

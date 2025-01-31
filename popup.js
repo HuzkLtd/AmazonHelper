@@ -48,8 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
+                // Map "extensionEnabled" to the real "enabled" setting
+                const realSetting = (id === 'extensionEnabled') ? 'enabled' : id;
+
                 // Save setting
-                saveSettings(id, this.checked);
+                saveSettings(realSetting, this.checked);
             });
         }
     });
