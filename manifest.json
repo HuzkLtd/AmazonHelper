@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AmazonHelper",
   "version": "1.0",
-  "description": "Transform your Amazon shopping with customisable dark mode and sponsored content removal. This elegant extension remembers your preferences whilst delivering a cleaner, more comfortable shopping experience.",
+  "description": "Enhance Amazon shopping with dark mode and ad-free browsing. Enjoy a cleaner, personalized experience tailored to your preferences.",
   "permissions": [
     "storage",
     "activeTab"
