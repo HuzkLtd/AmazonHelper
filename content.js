@@ -31,15 +31,26 @@ chrome.storage.sync.get({
 chrome.runtime.onMessage.addListener((request) => {
     if (request.type === 'EXTENSION_STATE') {
         state.enabled = request.enabled;
-        if (state.enabled) applyAllFilters();
+        if (state.enabled) {
+            applyAllFilters();
+        } else {
+            restoreOriginalOrder();
+        }
     } else if (request.type === 'SETTING_CHANGED') {
         state.settings[request.setting] = request.enabled;
-        applyAllFilters();
+        if (state.enabled) {
+            applyAllFilters();
+        }
     }
 });
 
 // Apply all filters and sorting
 function applyAllFilters() {
+    if (!state.enabled) {
+        restoreOriginalOrder();
+        return;
+    }
+
     const products = document.querySelectorAll('.s-result-item');
     if (!products.length) return;
 
@@ -53,13 +64,13 @@ function applyAllFilters() {
         const text = product.textContent.toLowerCase();
 
         // Sponsored kontrol
-        if (state.settings.sponsoredEnabled) {
-            const isSponsored = product.querySelector(
-                '[data-component-type="sp-sponsored-result"], ' +
-                'div.AdHolder, ' +
-                '[aria-label="View Sponsored information or leave ad feedback"]'
-            );
-            if (isSponsored) shouldHide = true;
+        const isSponsored = product.querySelector(
+            '[data-component-type="sp-sponsored-result"], ' +
+            'div.AdHolder, ' +
+            '[aria-label="View Sponsored information or leave ad feedback"]'
+        );
+        if (state.settings.sponsoredEnabled && isSponsored) {
+            shouldHide = true;
         }
 
         // Prime kontrol
@@ -70,20 +81,32 @@ function applyAllFilters() {
 
         // Today kontrol
         if (!shouldHide && state.settings.getToday) {
-            if (!text.includes('today') && !text.includes('same day') && !text.includes('arrives today')) {
-                shouldHide = true;
-            }
+            const isToday = text.includes('today') || text.includes('same day') || text.includes('arrives today');
+            if (!isToday) shouldHide = true;
         }
 
         // Tomorrow kontrol
         if (!shouldHide && state.settings.getTomorrow) {
-            if (!text.includes('tomorrow') && !text.includes('next day') && !text.includes('arrives tomorrow')) {
-                shouldHide = true;
-            }
+            const isTomorrow = text.includes('tomorrow') || text.includes('next day') || text.includes('arrives tomorrow');
+            if (!isTomorrow) shouldHide = true;
         }
 
         product.style.display = shouldHide ? 'none' : '';
     });
+
+    // Sponsored ürünleri geri yükle
+    if (!state.settings.sponsoredEnabled) {
+        state.originalOrder.forEach(product => {
+            const isSponsored = product.querySelector(
+                '[data-component-type="sp-sponsored-result"], ' +
+                'div.AdHolder, ' +
+                '[aria-label="View Sponsored information or leave ad feedback"]'
+            );
+            if (isSponsored) {
+                product.style.display = '';
+            }
+        });
+    }
 
     // Rating sıralaması
     if (state.settings.ratingSortEnabled) {
@@ -118,7 +141,10 @@ function restoreOriginalOrder() {
     if (!container || !state.originalOrder.length) return;
 
     const fragment = document.createDocumentFragment();
-    state.originalOrder.forEach(item => fragment.appendChild(item));
+    state.originalOrder.forEach(item => {
+        item.style.display = '';
+        fragment.appendChild(item);
+    });
     container.appendChild(fragment);
 }
 

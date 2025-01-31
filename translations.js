@@ -1,11 +1,13 @@
 const translations = {
     'com': {
         extensionActive: 'Extension Active',
-        sponsoredContent: 'Hide Sponsored'
+        sponsoredContent: 'Hide Sponsored',
+        ratingSort: 'Sort by Rating' // Added translation
     },
     'co.uk': {
         extensionActive: 'Extension Active',
-        sponsoredContent: 'Hide Sponsored'
+        sponsoredContent: 'Hide Sponsored',
+        ratingSort: 'Sort by Rating' // Added translation
     },
     'de': {
         extensionActive: 'Erweiterung Aktiv',
@@ -29,4 +31,4 @@ function getCurrentLanguage() {
     const host = window.location.host;
     const domain = host.split('amazon.')[1];
     return translations[domain] || translations['com']; // Varsayılan olarak İngilizce
-} 
+}

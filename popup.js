@@ -53,10 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-
-    document.getElementById('ratingSortEnabled').addEventListener('change', function() {
-        saveSettings('ratingSortEnabled', this.checked);
-    });
 });
 
 // Save settings and notify content script

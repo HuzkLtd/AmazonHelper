@@ -152,10 +152,7 @@ function handleProductPage() {
                 });
                 
                 // Elementi ve parent'ı gizle
-                element.style.display = 'none';
-                if (parent !== element) {
-                    parent.style.display = 'none';
-                }
+                parent.style.display = 'none';
                 
                 // İçerideki tüm sponsored içerikleri de gizle
                 parent.querySelectorAll('[data-cel-widget*="sponsored"], [cel_widget_id*="sponsored"]').forEach(child => {
@@ -165,12 +162,56 @@ function handleProductPage() {
         });
     }
 
+    function addDownloadButton() {
+        const imageContainer = document.querySelector('#imgTagWrapperId img');
+        if (!imageContainer) return;
+
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download Image';
+        downloadButton.style.position = 'absolute';
+        downloadButton.style.top = '10px';
+        downloadButton.style.right = '10px';
+        downloadButton.style.padding = '10px';
+        downloadButton.style.backgroundColor = '#febd69';
+        downloadButton.style.border = 'none';
+        downloadButton.style.borderRadius = '5px';
+        downloadButton.style.cursor = 'pointer';
+        downloadButton.style.zIndex = '1000';
+
+        downloadButton.addEventListener('click', () => {
+            const imageUrl = imageContainer.src.replace('_SX300_.jpg', '');
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'product_image.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        imageContainer.parentElement.style.position = 'relative';
+        imageContainer.parentElement.appendChild(downloadButton);
+    }
+
     // İlk çalıştırma
-    removeSponsored();
+    chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
+        if (items.sponsoredOnProductEnabled) {
+            removeSponsored();
+        }
+        if (items.downloadImagesEnabled) {
+            addDownloadButton();
+        }
+    });
 
     // DOM değişikliklerini izle
     const observer = new MutationObserver(() => {
-        removeSponsored();
+        chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
+            if (items.sponsoredOnProductEnabled) {
+                removeSponsored();
+            }
+            if (items.downloadImagesEnabled) {
+                addDownloadButton();
+            }
+        });
     });
 
     observer.observe(document.body, {
@@ -179,11 +220,38 @@ function handleProductPage() {
     });
 
     // Scroll ve sayfa yüklenme olaylarında tekrar kontrol et
-    window.addEventListener('scroll', removeSponsored);
-    window.addEventListener('load', removeSponsored);
+    window.addEventListener('scroll', () => {
+        chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
+            if (items.sponsoredOnProductEnabled) {
+                removeSponsored();
+            }
+            if (items.downloadImagesEnabled) {
+                addDownloadButton();
+            }
+        });
+    });
+    window.addEventListener('load', () => {
+        chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
+            if (items.sponsoredOnProductEnabled) {
+                removeSponsored();
+            }
+            if (items.downloadImagesEnabled) {
+                addDownloadButton();
+            }
+        });
+    });
     
     // Periyodik kontrol (lazy-loaded içerikler için)
-    setInterval(removeSponsored, 500);
+    setInterval(() => {
+        chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
+            if (items.sponsoredOnProductEnabled) {
+                removeSponsored();
+            }
+            if (items.downloadImagesEnabled) {
+                addDownloadButton();
+            }
+        });
+    }, 500);
 }
 
 function addCategoryToRating() {
@@ -219,6 +287,16 @@ chrome.runtime.onMessage.addListener((message) => {
         } else {
             // Re-enable extension actions
             removeSponsored();
+        }
+    } else if (message.type === 'SETTING_CHANGED' && message.setting === 'sponsoredOnProductEnabled') {
+        if (message.enabled) {
+            removeSponsored();
+        }
+    } else if (message.type === 'SETTING_CHANGED' && message.setting === 'downloadImagesEnabled') {
+        if (message.enabled) {
+            addDownloadButton();
+        } else {
+            // Optionally remove download button if desired
         }
     }
 });
