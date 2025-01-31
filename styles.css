@@ -3,7 +3,7 @@
 div.AdHolder,
 [aria-label="View Sponsored information or leave ad feedback"] {
     display: none !important;
-    pointer-events: none !important; /* Tıklamayı tamamen engelle */
+    pointer-events: none !important; /* Completely disable clicks */
 }
 
 /* Dark mode support */
@@ -15,13 +15,13 @@ div.AdHolder,
     }
 }
 
-/* Rating yıldızlarını belirginleştir */
+/* Highlight rating stars */
 .a-icon-star-small {
     transform: scale(1.1);
     transition: transform 0.2s ease;
 }
 
-/* Tema ayarları */
+/* Theme settings */
 :root {
     --primary-color: #232f3e;
     --secondary-color: #febd69;

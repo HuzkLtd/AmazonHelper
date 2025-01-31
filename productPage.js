@@ -1,4 +1,4 @@
-// Ürün detay sayfası için özel işlemler
+// Special operations for the product detail page
 function handleProductPage() {
     if (!window.location.pathname.includes('/dp/')) return;
 
@@ -140,7 +140,7 @@ function handleProductPage() {
     function removeSponsored() {
         selectors.sponsored.forEach(selector => {
             document.querySelectorAll(selector).forEach(element => {
-                // Önce parent container'ı bul
+                // Find the parent container first
                 let parent = element;
                 selectors.parentContainers.some(containerSelector => {
                     const container = element.closest(containerSelector);
@@ -151,10 +151,10 @@ function handleProductPage() {
                     return false;
                 });
                 
-                // Elementi ve parent'ı gizle
+                // Hide the element and its parent
                 parent.style.display = 'none';
                 
-                // İçerideki tüm sponsored içerikleri de gizle
+                // Hide all sponsored content inside
                 parent.querySelectorAll('[data-cel-widget*="sponsored"], [cel_widget_id*="sponsored"]').forEach(child => {
                     child.style.display = 'none';
                 });
@@ -192,7 +192,7 @@ function handleProductPage() {
         imageContainer.parentElement.appendChild(downloadButton);
     }
 
-    // İlk çalıştırma
+    // Initial run
     chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
         if (items.sponsoredOnProductEnabled) {
             removeSponsored();
@@ -202,7 +202,7 @@ function handleProductPage() {
         }
     });
 
-    // DOM değişikliklerini izle
+    // Watch for DOM changes
     const observer = new MutationObserver(() => {
         chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
             if (items.sponsoredOnProductEnabled) {
@@ -219,7 +219,7 @@ function handleProductPage() {
         subtree: true
     });
 
-    // Scroll ve sayfa yüklenme olaylarında tekrar kontrol et
+    // Check again on scroll and page load events
     window.addEventListener('scroll', () => {
         chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
             if (items.sponsoredOnProductEnabled) {
@@ -241,7 +241,7 @@ function handleProductPage() {
         });
     });
     
-    // Periyodik kontrol (lazy-loaded içerikler için)
+    // Periodic check (for lazy-loaded content)
     setInterval(() => {
         chrome.storage.sync.get(['sponsoredOnProductEnabled', 'downloadImagesEnabled'], (items) => {
             if (items.sponsoredOnProductEnabled) {
@@ -267,13 +267,13 @@ function addCategoryToRating() {
     }
 }
 
-// Sayfa yüklendiğinde çalıştır
+// Run on page load
 document.addEventListener('DOMContentLoaded', () => {
     handleProductPage();
     addCategoryToRating();
 });
 
-// Mesaj dinleyicisi ekle
+// Add message listener
 chrome.runtime.onMessage.addListener((message) => {
     if (message.type === 'SETTING_CHANGED' && message.setting === 'sponsoredEnabled') {
         if (message.enabled) {

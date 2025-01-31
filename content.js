@@ -54,7 +54,7 @@ function applyAllFilters() {
     const products = document.querySelectorAll('.s-result-item');
     if (!products.length) return;
 
-    // Orijinal sıralamayı sakla
+    // Save original ordering
     if (!state.originalOrder.length) {
         state.originalOrder = Array.from(products);
     }
@@ -63,7 +63,7 @@ function applyAllFilters() {
         let shouldHide = false;
         const text = product.textContent.toLowerCase();
 
-        // Sponsored kontrol
+        // Sponsored check
         const isSponsored = product.querySelector(
             '[data-component-type="sp-sponsored-result"], ' +
             'div.AdHolder, ' +
@@ -73,19 +73,19 @@ function applyAllFilters() {
             shouldHide = true;
         }
 
-        // Prime kontrol
+        // Prime check
         if (!shouldHide && state.settings.primeOnly) {
             const isPrime = product.querySelector('[aria-label*="Prime"], .a-icon-prime');
             if (!isPrime) shouldHide = true;
         }
 
-        // Today kontrol
+        // Today check
         if (!shouldHide && state.settings.getToday) {
             const isToday = text.includes('today') || text.includes('same day') || text.includes('arrives today');
             if (!isToday) shouldHide = true;
         }
 
-        // Tomorrow kontrol
+        // Tomorrow check
         if (!shouldHide && state.settings.getTomorrow) {
             const isTomorrow = text.includes('tomorrow') || text.includes('next day') || text.includes('arrives tomorrow');
             if (!isTomorrow) shouldHide = true;
@@ -108,7 +108,7 @@ function applyAllFilters() {
         });
     }
 
-    // Rating sıralaması
+    // Rating sorting
     if (state.settings.ratingSortEnabled) {
         sortByRating();
     } else {

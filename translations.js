@@ -20,15 +20,15 @@ const translations = {
         ratingSort: 'Trier par Évaluation'
     },
     'com.tr': {
-        extensionActive: 'Eklenti Aktif',
-        sponsoredContent: 'Sponsorluları Gizle',
-        ratingSort: 'Puana Göre Sırala'
+        extensionActive: 'Extension Active',
+        sponsoredContent: 'Hide Sponsored',
+        ratingSort: 'Sort by Rating'
     }
-    // Diğer diller eklenebilir
+    // Additional languages can be added
 };
 
 function getCurrentLanguage() {
     const host = window.location.host;
     const domain = host.split('amazon.')[1];
-    return translations[domain] || translations['com']; // Varsayılan olarak İngilizce
+    return translations[domain] || translations['com']; // Default to English
 }
