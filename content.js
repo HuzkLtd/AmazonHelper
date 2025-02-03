@@ -51,10 +51,11 @@ function applyAllFilters() {
         return;
     }
 
-    const products = document.querySelectorAll('.s-result-item');
+    // Target only product items using the data-asin attribute
+    const products = document.querySelectorAll('.s-main-slot > div[data-asin]');
     if (!products.length) return;
 
-    // Save original ordering
+    // Save original ordering if not already saved
     if (!state.originalOrder.length) {
         state.originalOrder = Array.from(products);
     }
@@ -112,7 +113,7 @@ function applyAllFilters() {
     if (state.settings.ratingSortEnabled) {
         sortByRating();
     } else {
-        // Reorder only the still-visible items to the original order
+        // Reorder only the visible items to their original order
         const container = document.querySelector('.s-main-slot');
         if (!container) return;
         const fragment = document.createDocumentFragment();
@@ -128,7 +129,8 @@ function sortByRating() {
     const container = document.querySelector('.s-main-slot');
     if (!container) return;
 
-    const products = Array.from(container.querySelectorAll('.s-result-item')).filter(p => p.style.display !== 'none');
+    // Only sort product items with a data-asin attribute and not hidden
+    const products = Array.from(container.querySelectorAll('div[data-asin]')).filter(p => p.style.display !== 'none');
     const fragment = document.createDocumentFragment();
 
     products
@@ -149,6 +151,7 @@ function restoreOriginalOrder() {
 
     const fragment = document.createDocumentFragment();
     state.originalOrder.forEach(item => {
+        // Ensure product is redisplayed
         item.style.display = '';
         fragment.appendChild(item);
     });
