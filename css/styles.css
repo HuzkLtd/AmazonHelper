@@ -1,0 +1,236 @@
+/**
+ * AmazonHelper - Enhanced Stylesheet
+ * Improved styles for more reliable functionality
+ */
+
+/* ========== CRITICAL PAGE FIXES ========== */
+/* Reset problematic Amazon styles - high specificity to override */
+html body .s-main-slot > div[data-asin] * {
+    pointer-events: auto !important;
+}
+
+/* Reset Amazon's interference with normal clicks */
+html body div[data-asin],
+html body .s-result-item,
+html body div.sg-col-4-of-24 {
+    pointer-events: auto !important;
+}
+
+/* ========== PAGINATION FIXES ========== */
+/* High-specificity selectors to ensure pagination is clickable */
+html body .s-pagination-item,
+html body .s-pagination-button,
+html body .s-pagination-next,
+html body .s-pagination-previous,
+html body .s-pagination-separator,
+html body .s-pagination-container,
+html body .s-pagination-strip,
+html body .a-pagination,
+html body .a-pagination a,
+html body .a-pagination li,
+html body .a-pagination span,
+html body a[href*="page="],
+html body a[href*="pgno="],
+html body a[aria-label*="page"],
+html body a[aria-label*="Page"],
+html body .amazon-helper-clickable {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+    position: relative !important;
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+/* Additional specificity for problematic pagination elements */
+html body span.s-pagination-item.s-pagination-selected,
+html body span.s-pagination-item.s-pagination-disabled,
+html body .s-pagination-item.s-pagination-button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+    position: relative !important;
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+/* Ensure parent containers are clickable */
+html body .s-pagination-container *,
+html body .a-pagination * {
+    pointer-events: auto !important;
+}
+
+/* ========== SPONSORED CONTENT HANDLING ========== */
+/* Hide sponsored content when setting is enabled (true) */
+body:not(.amazon-helper-show-sponsored) [data-component-type="sp-sponsored-result"],
+body:not(.amazon-helper-show-sponsored) div.AdHolder,
+body:not(.amazon-helper-show-sponsored) [aria-label="View Sponsored information or leave ad feedback"],
+body:not(.amazon-helper-show-sponsored) .s-sponsored-label-info-icon,
+body:not(.amazon-helper-show-sponsored) .puis-sponsored-label,
+body:not(.amazon-helper-show-sponsored) .puis-label-variant {
+    display: none !important;
+}
+
+/* Show sponsored content when setting is disabled (false) */
+body.amazon-helper-show-sponsored [data-component-type="sp-sponsored-result"],
+body.amazon-helper-show-sponsored div.AdHolder,
+body.amazon-helper-show-sponsored [aria-label="View Sponsored information or leave ad feedback"],
+body.amazon-helper-show-sponsored .s-sponsored-label-info-icon,
+body.amazon-helper-show-sponsored .puis-sponsored-label,
+body.amazon-helper-show-sponsored .puis-label-variant {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Show parent containers for sponsored content when setting is disabled */
+body.amazon-helper-show-sponsored .s-result-item:has([data-component-type="sp-sponsored-result"]),
+body.amazon-helper-show-sponsored .s-result-item:has(.s-sponsored-label-info-icon),
+body.amazon-helper-show-sponsored .s-result-item:has(.puis-sponsored-label),
+body.amazon-helper-show-sponsored div[data-asin]:has([data-component-type="sp-sponsored-result"]),
+body.amazon-helper-show-sponsored div[data-asin]:has(.s-sponsored-label-info-icon),
+body.amazon-helper-show-sponsored div[data-asin]:has(.puis-sponsored-label) {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* ========== PRODUCT LINKS FIXES ========== */
+/* Make product images easily clickable */
+html body #imgTagWrapperId img,
+html body #landingImage,
+html body .a-dynamic-image,
+html body .a-carousel-card img,
+html body .s-image,
+html body .s-product-image-container img {
+    z-index: 100 !important;
+    position: relative !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+/* Make image parent containers clickable */
+html body #imgTagWrapperId,
+html body #imageBlock,
+html body #imageBlock_feature_div,
+html body .imgTagWrapper,
+html body .a-carousel-viewport,
+html body .s-product-image-container {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Enhance product links */
+html body a[href*="/dp/"],
+html body .a-link-normal,
+html body h2 a,
+html body a.a-text-normal,
+html body .s-result-item a,
+html body .s-card-container a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+    position: relative !important;
+}
+
+/* Make product containers clickable */
+html body .s-result-item,
+html body .s-product-image-container,
+html body div[data-asin],
+html body .s-card-container {
+    pointer-events: auto !important;
+}
+
+/* Fix product titles */
+html body h2.a-size-mini,
+html body h2.a-size-base,
+html body .a-size-base-plus,
+html body .a-size-medium,
+html body .a-text-normal {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+    position: relative !important;
+}
+
+/* Fix for Amazon's new grid layout */
+html body .s-card-container .a-section,
+html body .s-include-content-margin {
+    pointer-events: auto !important;
+}
+
+/* ========== DOWNLOAD BUTTON STYLING ========== */
+.amazon-helper-download-button {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    padding: 10px !important;
+    background-color: #febd69 !important;
+    border: none !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    z-index: 1000 !important;
+    font-size: 14px !important;
+    color: #111 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    font-weight: bold !important;
+}
+
+.amazon-helper-download-button:hover {
+    background-color: #f0a647 !important;
+}
+
+/* Category in ratings styling */
+.amazon-helper-category {
+    font-size: 12px !important;
+    color: #555 !important;
+    margin-left: 5px !important;
+}
+
+/* ========== SPECIAL FIXES FOR SPECIFIC AMAZON ELEMENTS ========== */
+/* Fix for carousel navigation */
+html body .a-carousel-card,
+html body .a-carousel-container,
+html body .a-carousel-viewport,
+html body .a-carousel-left,
+html body .a-carousel-right {
+    pointer-events: auto !important;
+}
+
+/* Fix for the Prime badge */
+html body .a-icon-prime,
+html body span[aria-label*="Prime"] {
+    pointer-events: auto !important;
+}
+
+/* Fix for form elements */
+html body form, 
+html body button, 
+html body input, 
+html body select {
+    pointer-events: auto !important;
+}
+
+/* Fix for filter and navigation menus */
+html body nav, 
+html body .a-section.a-spacing-none.s-border-bottom, 
+html body .a-section.a-spacing-small {
+    pointer-events: auto !important;
+}
+
+/* Highlight rating stars slightly */
+.a-icon-star-small {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* ========== DARK MODE SUPPORT ========== */
+/* Support for dark mode as needed by popup */
+@media (prefers-color-scheme: dark) {
+    .amazon-helper-download-button {
+        background-color: #febd69 !important;
+        color: #000 !important;
+    }
+    
+    .amazon-helper-category {
+        color: #ccc !important;
+    }
+}

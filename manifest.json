@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "AmazonHelper",
-  "version": "1.1",
-  "description": "Enhance Amazon shopping with dark mode and ad-free browsing. Enjoy a cleaner, personalized experience tailored to your preferences.",
+  "version": "1.2",
+  "description": "Enhance Amazon shopping with dark mode and ad-free browsing. Enjoy a cleaner, personalized experience.",
   "permissions": [
     "storage",
     "activeTab"
@@ -48,8 +48,8 @@
         "*://*.amazon.se/*",
         "*://*.amazon.com.tr/*"
       ],
-      "js": ["content.js", "productPage.js"],
-      "css": ["styles.css"]
+      "js": ["content.js"],
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": {
